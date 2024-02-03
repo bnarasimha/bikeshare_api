@@ -27,13 +27,25 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f requirements.txt ]; then pip install -r bikeshare_project/requirements/test_requirements.txt; fi
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Train the Model
+      run: |
+        python bikeshare_project/bikeshare_model/train_pipeline.py
     - name: Test with pytest
       run: |
         pytest
+    - name: Package the build
+      run: |
+        python -m build
+    - name: Build Docker Image
+      run: |
+        Docker build -t bnarasimha21/bikeshare_api bikeshare_project/bikeshare_model_api/
+    - name: Push Docker Image
+      run: |
+        Docker push bnarasimha21/bikeshare_api
