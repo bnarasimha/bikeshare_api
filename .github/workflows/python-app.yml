@@ -63,5 +63,7 @@ jobs:
       run:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD    
     - name: Push Docker Image
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER_NAME}}
       run: |
-        docker push bnarasimha21/bikeshare_api
+        docker push $DOCKER_USER/bikeshare_api
