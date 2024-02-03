@@ -50,7 +50,7 @@ jobs:
         python -m build
     - name: Copy wheel file from dist to bikeshare_model_api folder
       run: |
-        copy bikeshare_project/dist/*.whl bikeshare_model_api
+        cp bikeshare_project/dist/*.whl bikeshare_model_api
     - name: Build Docker Image
       env:
         DOCKER_USER: ${{secrets.DOCKER_USER_NAME}}
